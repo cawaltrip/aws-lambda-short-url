@@ -2,3 +2,6 @@
 *.tfvars
 *.zip
 .terraform
+
+# macOS stuff
+.DS_Store
