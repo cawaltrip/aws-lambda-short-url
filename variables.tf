@@ -5,9 +5,11 @@ variable "region" {
 }
 variable "short_url_domain" {
   type        = string
+  default = "skelli.es"
   description = "The domain name to use for short URLs."
 }
 variable "profile_name" {
   type = string
+  default = "skellies"
   description = "The AWS profile name to use from credentials file."
 }
