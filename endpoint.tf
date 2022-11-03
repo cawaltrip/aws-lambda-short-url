@@ -31,7 +31,7 @@ resource "aws_cloudfront_distribution" "short_urls_cloudfront" {
   aliases    = [var.short_url_domain]
   origin {
     origin_id   = "origin-bucket-${aws_s3_bucket.short_urls_bucket.id}"
-    domain_name = aws_s3_bucket.short_urls_bucket.website_endpoint
+    domain_name = aws_s3_bucket_website_configuration.short_urls_bucket.website_endpoint
 
     custom_origin_config {
       origin_protocol_policy = "http-only"
