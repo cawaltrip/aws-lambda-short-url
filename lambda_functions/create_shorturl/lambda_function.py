@@ -9,7 +9,7 @@ def generate_token(value, length = 6):
 
 def lambda_handler(event, context):
     if 'url' not in event['body']:
-        return {'statusCode': 400,'body': json.dumps({'error': "No 'url' provided has been provided."})}
+        return {'statusCode': 400,'body': json.dumps({'error': "No 'url' has been provided."})}
     url = json.loads(event['body'])['url']
 
     if 'custom_url' not in event['body']:
