@@ -13,6 +13,17 @@ resource "aws_route53_record" "short_url_domain_alias" {
   }
 }
 
+resource "aws_route53_record" "github_pages_verification" {
+  zone_id = data.aws_route53_zone.short_url_domain.zone_id
+  name = "_github-pages-challenge-cawaltrip.skelli.es"
+  type = "TXT"
+  ttl = 300
+
+  records = [
+    "ce0d38db47ad432df1a0b5bbd57d7c"
+  ]
+}
+
 resource "aws_cloudfront_distribution" "short_urls_cloudfront" {
   depends_on = [aws_lambda_function.apply_security_headers]
   provider   = aws.cloudfront_acm
