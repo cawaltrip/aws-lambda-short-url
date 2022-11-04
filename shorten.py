@@ -2,7 +2,6 @@
 
 import argparse
 import requests
-import json
 from pathlib import Path
 import sys
 import configparser
