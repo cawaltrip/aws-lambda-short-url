@@ -13,3 +13,13 @@ variable "profile_name" {
   default = "skellies"
   description = "The AWS profile name to use from credentials file."
 }
+variable "default_redirect_hostname" {
+  type = string
+  default = "www.facebook.com"
+  description = "Hostname to redirect to if an object doesn't exist."
+}
+variable "default_redirection_subdirectory" {
+  type = string
+  default = "groups/ludoskeletons"
+  description = "Subdirectory to attach to hostname for redirection when an object doesn't exist."
+}
