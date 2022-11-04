@@ -1,10 +1,10 @@
-# AWS Lambda Short URL Generator
+# Skeletons on Parade Website/URL Shortening
 
 Use terraform to quickly setup your own Short URL generator using a custom domain with AWS API Gateway, CloudFront, Lambda, Route 53 and S3.
 
 ## Approach
 
-The plan is to use CloudFront to cache redirecting web pages at the edge of the CloudFront network that will redirect form the short URL to the full URL.
+The plan is to use CloudFront to cache redirecting web pages at the edge of the CloudFront network that will redirect form the short URL to the full URL.  Any 404 response will redirect to a page defined in `variables.tf`.
 
 The redirecting web pages will be served up from S3. With S3 you can create an object with a meta data entry called `Website Redirect Location`. When an S3 bucket is configured to host a static website objects (with a `Website Redirect Location` metadata entry) will be served up over HTTP as a redirecting webpage.
 
@@ -19,14 +19,14 @@ Setup the domain that you want to use for your short URLs as a Hosted Zone in Ro
 
 ## Deploy
 Initialise the backend to use an S3 bucket to store the state (this only needs to be done once):
-```
+```bash
 $ terraform init -backend-config "bucket=terraform-states.example.com"
 ```
 Alternatively you can remove `terraform.tf` which defines the backend store - this will cause terraform to default to local file storage.
 
 Use terraform to apply the infrastructure change needed to run this short URL generator:
 
-```
+```bash
 $ terraform apply
 ```
 
@@ -40,9 +40,14 @@ Once the infrastrucutre has been created it will be given an output similar to t
 ```
 Outputs:
 
-admin_api_key          = uWyv6B1NPI0vWxVPeQD46ctlmWd6l7x3YLSYCRf0
+admin_api_key          = (sensitive)
 cloudfront_domain_name = d111111abcdef8.cloudfront.net
 short_url_domain       = example.com
+```
+
+Save the secret key with the following:
+```bash
+python3 ./save_key.py --profile="~/.aws/api-key-name-here"
 ```
 
 ## Using the API
@@ -71,6 +76,17 @@ The response will provide you with the full short URL and token value in JSON ou
 	"url": "https://www.james-ridgway.co.uk/blog/build-your-own-custom-short-url-generator-using-aws",
 	"token": "cwM1iQ"
 }
+```
+
+A simple CLI for adding new items can be used from this repository.  In this example, the custom domain is :
+```
+shorten.py [-h] [--api-key KEY] [--profile PROFILE] --url INPUT [--short-name TOKEN]
+```
+```bash
+python3 ./shorten.py --url "https://github.com/" --short-token "Foobar"
+
+Status code: 200
+Short URL: https://example.com/Foobar
 ```
 
 ### Visit a Short URL
