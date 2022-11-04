@@ -1,9 +1,9 @@
 provider "aws" {
   region = var.region
-  profile = "skellies" # Could use `var.profile_name` here instead.
+  profile = var.profile_name
 }
 provider "aws" {
-  region = "us-west-2"
+  region = "us-east-1"
   profile = var.profile_name
   alias  = "cloudfront_acm"
 }
