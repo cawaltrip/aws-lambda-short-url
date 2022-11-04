@@ -24,6 +24,17 @@ resource "aws_route53_record" "github_pages_verification" {
   ]
 }
 
+resource "aws_route53_record" "the_gregiverse_page" {
+  zone_id = data.aws_route53_zone.short_url_domain.zone_id
+  name = "gregiverse.${var.short_url_domain}"
+  type = "CNAME"
+  ttl = 300
+
+  records = [
+    "cawaltrip.github.io"
+  ]
+}
+
 resource "aws_cloudfront_distribution" "short_urls_cloudfront" {
   depends_on = [aws_lambda_function.apply_security_headers]
   provider   = aws.cloudfront_acm
@@ -37,7 +48,7 @@ resource "aws_cloudfront_distribution" "short_urls_cloudfront" {
       origin_protocol_policy = "http-only"
       http_port              = "80"
       https_port             = "443"
-      origin_ssl_protocols   = ["TLSv1.1"]
+      origin_ssl_protocols   = ["TLSv1.2"]
     }
   }
   origin {
@@ -49,7 +60,7 @@ resource "aws_cloudfront_distribution" "short_urls_cloudfront" {
       origin_protocol_policy = "https-only"
       http_port              = "80"
       https_port             = "443"
-      origin_ssl_protocols   = ["TLSv1.1"]
+      origin_ssl_protocols   = ["TLSv1.2"]
     }
   }
   default_cache_behavior {
@@ -110,6 +121,11 @@ resource "aws_cloudfront_distribution" "short_urls_cloudfront" {
     acm_certificate_arn            = aws_acm_certificate_validation.short_url_domain_cert.certificate_arn
     ssl_support_method             = "sni-only"
     minimum_protocol_version       = "TLSv1.1_2016"
+  }
+  logging_config {
+    include_cookies = false
+    bucket          = "skellies-terraform.s3.amazonaws.com"
+    prefix          = "cloudfront-logging"
   }
   tags = {
     Project = "short_urls"
