@@ -1,6 +1,5 @@
 resource "aws_s3_bucket" "backend" {
     bucket = var.backend_bucket
-    key = var.backend_bucket_key
 }
 
 resource "aws_s3_bucket_versioning" "backend" {
@@ -18,4 +17,50 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "backend" {
           sse_algorithm = "AES256"
         }
     }
+}
+
+resource "aws_s3_bucket_public_access_block" "backend" {
+  bucket = aws_s3_bucket.backend.id
+  
+  block_public_acls = true
+  block_public_policy = true
+  ignore_public_acls = true
+  restrict_public_buckets = true
+}
+
+resource "aws_s3_bucket_policy" "backend" {
+  bucket = aws_s3_bucket.backend.id
+  policy = data.aws_iam_policy_document.allow_skellies_access.json
+}
+
+resource "aws_s3_bucket_ownership_controls" "backend" {
+  bucket = aws_s3_bucket.backend.id
+
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+data "aws_iam_policy_document" "allow_skellies_access" {
+  statement {
+    principals {
+      type = "AWS"
+      identifiers = ["${var.skellies_arn}"]
+    }
+    actions = [
+      "s3:ListBucket"
+    ]
+    resources = ["${var.backend_bucket_arn}"]
+  }
+  statement {
+    principals {
+      type = "AWS"
+      identifiers = ["${var.skellies_arn}"]
+    }
+    actions = [
+      "s3:GetObject",
+      "s3:PutObject"
+    ]
+    resources = ["${var.backend_bucket_arn}/*"]
+  }
 }
