@@ -1,7 +1,10 @@
+# Terraform stuff
 *.tfstate*
 *.tfvars
 *.zip
 .terraform
+
+**/.terraform/*
 
 # macOS stuff
 .DS_Store
