@@ -10,7 +10,7 @@ resource "aws_lambda_permission" "short_url_lambda_permssion_short_url_delete" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.short_url_delete.arn
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "arn:aws:execute-api:${var.region}:${data.aws_caller_identity.current.account_id}:${aws_api_gateway_rest_api.short_urls_api_gateway.id}/*/${aws_api_gateway_method.short_url_api_delete.http_method}${aws_api_gateway_resource.short_url_api_resource_admin.path}/*"
+  source_arn    = "arn:aws:execute-api:${var.aws_region}:${data.aws_caller_identity.current.account_id}:${aws_api_gateway_rest_api.short_urls_api_gateway.id}/*/${aws_api_gateway_method.short_url_api_delete.http_method}${aws_api_gateway_resource.short_url_api_resource_admin.path}/*"
 }
 
 resource "aws_lambda_function" "short_url_delete" {
@@ -22,7 +22,7 @@ resource "aws_lambda_function" "short_url_delete" {
   runtime          = "python3.9"
   environment {
     variables = {
-      BUCKET_NAME = "${var.short_url_domain}"
+      BUCKET_NAME = "${var.site_domain}"
     }
   }
   tags = {

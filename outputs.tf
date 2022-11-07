@@ -1,5 +1,5 @@
 output "short_url_domain" {
-  value = var.short_url_domain
+  value = var.site_domain
 }
 
 output "cloudfront_domain_name" {

@@ -28,7 +28,7 @@ resource "aws_api_gateway_integration" "short_url_api_delete_lambda" {
   http_method             = aws_api_gateway_method.short_url_api_delete.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = "arn:aws:apigateway:${var.region}:lambda:path/2015-03-31/functions/${aws_lambda_function.short_url_delete.arn}/invocations"
+  uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${aws_lambda_function.short_url_delete.arn}/invocations"
 }
 
 resource "aws_api_gateway_integration_response" "short_url_api_delete_lambda_response" {

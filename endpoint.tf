@@ -1,10 +1,10 @@
 data "aws_route53_zone" "short_url_domain" {
-  name = var.short_url_domain
+  name = var.site_domain
 }
 
 resource "aws_route53_record" "short_url_domain_alias" {
   zone_id = data.aws_route53_zone.short_url_domain.zone_id
-  name    = var.short_url_domain
+  name    = var.site_domain
   type    = "A"
   alias {
     name                   = aws_cloudfront_distribution.short_urls_cloudfront.domain_name
@@ -26,7 +26,7 @@ resource "aws_route53_record" "github_pages_verification" {
 
 resource "aws_route53_record" "the_gregiverse_page" {
   zone_id = data.aws_route53_zone.short_url_domain.zone_id
-  name = "gregiverse.${var.short_url_domain}"
+  name = "gregiverse.${var.site_domain}"
   type = "CNAME"
   ttl = 300
 
@@ -39,7 +39,7 @@ resource "aws_cloudfront_distribution" "short_urls_cloudfront" {
   depends_on = [aws_lambda_function.apply_security_headers]
   provider   = aws.cloudfront_acm
   enabled    = true
-  aliases    = [var.short_url_domain]
+  aliases    = [var.site_domain]
   origin {
     origin_id   = "origin-bucket-${aws_s3_bucket.short_urls_bucket.id}"
     domain_name = aws_s3_bucket_website_configuration.short_urls_bucket.website_endpoint

@@ -70,8 +70,8 @@ resource "aws_iam_policy" "short_url_s3_policy" {
         "s3:PutObjectAcl"
       ],
       "Resource": [
-        "arn:aws:s3:::${var.short_url_domain}/",
-        "arn:aws:s3:::${var.short_url_domain}/*"
+        "arn:aws:s3:::${var.site_domain}/",
+        "arn:aws:s3:::${var.site_domain}/*"
       ]
     }
   ]

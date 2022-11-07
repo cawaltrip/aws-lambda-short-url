@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "short_urls_bucket" {
-  bucket = var.short_url_domain
+  bucket = var.site_domain
 
   tags = {
     Project = "short_urls"
