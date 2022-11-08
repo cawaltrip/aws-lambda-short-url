@@ -30,7 +30,7 @@ resource "aws_s3_bucket_public_access_block" "backend" {
 
 resource "aws_s3_bucket_policy" "backend" {
   bucket = aws_s3_bucket.backend.id
-  policy = data.aws_iam_policy_document.allow_skellies_access.json
+  policy = data.aws_iam_policy_document.allow_iam_user_access.json
 }
 
 resource "aws_s3_bucket_ownership_controls" "backend" {
@@ -41,11 +41,11 @@ resource "aws_s3_bucket_ownership_controls" "backend" {
   }
 }
 
-data "aws_iam_policy_document" "allow_skellies_access" {
+data "aws_iam_policy_document" "allow_iam_user_access" {
   statement {
     principals {
       type = "AWS"
-      identifiers = ["${var.skellies_arn}"]
+      identifiers = ["${var.iam_user_arn}"]
     }
     actions = [
       "s3:ListBucket"
@@ -55,7 +55,7 @@ data "aws_iam_policy_document" "allow_skellies_access" {
   statement {
     principals {
       type = "AWS"
-      identifiers = ["${var.skellies_arn}"]
+      identifiers = ["${var.iam_user_arn}"]
     }
     actions = [
       "s3:GetObject",

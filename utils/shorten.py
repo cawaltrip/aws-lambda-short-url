@@ -16,6 +16,7 @@ def main():
                         help="Location where API key is stored (use `api_key` as key)")
     parser.add_argument('-u', '--url', required=True, dest="input", help="URL to shorten")
     parser.add_argument('-s', '--short-name', required=False, dest="token", help="Short name to use (default is random)")
+    parser.add_argument('-c', '--cloudfront', dest="domain", help="CloudFront domain name")
 
     args = parser.parse_args()
 
@@ -26,11 +27,16 @@ def main():
                 config = configparser.ConfigParser()
                 config.read(p)
                 conf = config['DEFAULT']
-                if "api_key" in conf.keys():
-                    args.key = conf['api_key']
+                if "admin_api_key" in conf.keys():
+                    args.key = conf['admin_api_key']
+                if "cloudfront_domain_name" in conf.keys():
+                    args.domain = conf['cloudfront_domain_name']
         
     if args.key is None:
         print(f"No API key specified!")
+        sys.exit(1)
+    if args.domain is None:
+        print(f"No CloudFront domain specified!")
         sys.exit(1)
     
     headers = {
@@ -53,7 +59,7 @@ def main():
         sys.exit(1)
 
     r = requests.post(
-        url="https://d2w7i4mtj768x.cloudfront.net/admin",
+        url=f"https://{args.domain}/admin",
         headers=headers,
         json=data
     )

@@ -12,6 +12,7 @@ def main():
 
     CONFIG_SECTION = "DEFAULT"
     API_KEY_NAME = "admin_api_key"
+    CLOUDFRONT_KEY_NAME = "cloudfront_domain_name"
 
     parser = argparse.ArgumentParser(
                     prog = 'save_key',
@@ -25,7 +26,7 @@ def main():
     args = parser.parse_args()
 
     # Get the secret API key from Terraform
-    result = run(["terraform", "output", "-json"], capture_output=True)
+    result = run(["terraform", "output", "-json"], capture_output=True, cwd="../infra/site")
     if result.returncode != 0:
         print(f"Failed to retrieve terraform output")
         sys.exit(1)
@@ -34,11 +35,16 @@ def main():
             'value' not in output[API_KEY_NAME].keys()):
         print(f"Admin API Key not in output")
         sys.exit(1)
-    
+    if (CLOUDFRONT_KEY_NAME not in output.keys() and 
+            'value' not in output[CLOUDFRONT_KEY_NAME].keys()):
+        print(f"CloudFront domain name not in output")
+        sys.exit(1)
+
     # Try to write the config file.
     p = Path(args.profile).expanduser()
     config = configparser.ConfigParser()
     config[CONFIG_SECTION][API_KEY_NAME] = output[API_KEY_NAME]['value']
+    config[CONFIG_SECTION][CLOUDFRONT_KEY_NAME] = output[CLOUDFRONT_KEY_NAME]['value']
     try:
         with open(p, 'w') as fp:
             config.write(fp)

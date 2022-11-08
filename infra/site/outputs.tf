@@ -1,9 +1,9 @@
 output "short_url_domain" {
-  value = var.site_domain
+  value = var.domain_name
 }
 
 output "cloudfront_domain_name" {
-  value = aws_cloudfront_distribution.short_urls_cloudfront.domain_name
+  value = aws_cloudfront_distribution.domain_cloudfront.domain_name
 }
 
 output "admin_api_key" {

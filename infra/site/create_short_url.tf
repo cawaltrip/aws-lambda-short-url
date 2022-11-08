@@ -21,10 +21,10 @@ resource "aws_lambda_function" "short_url_create" {
   runtime          = "python3.9"
   environment {
     variables = {
-      BUCKET_NAME = "${var.site_domain}"
+      BUCKET_NAME = "${var.domain_name}"
     }
   }
   tags = {
-    Project = "short_urls"
+    Project = var.project_tag
   }
 }

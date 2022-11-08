@@ -23,10 +23,10 @@ resource "aws_lambda_function" "short_url_list" {
   memory_size      = 512
   environment {
     variables = {
-      BUCKET_NAME = "${var.site_domain}"
+      BUCKET_NAME = "${var.domain_name}"
     }
   }
   tags = {
-    Project = "short_urls"
+    Project = var.project_tag
   }
 }

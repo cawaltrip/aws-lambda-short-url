@@ -70,8 +70,8 @@ resource "aws_iam_policy" "short_url_s3_policy" {
         "s3:PutObjectAcl"
       ],
       "Resource": [
-        "arn:aws:s3:::${var.site_domain}/",
-        "arn:aws:s3:::${var.site_domain}/*"
+        "arn:aws:s3:::${var.domain_name}/",
+        "arn:aws:s3:::${var.domain_name}/*"
       ]
     }
   ]
@@ -82,4 +82,28 @@ EOF
 resource "aws_iam_role_policy_attachment" "short_url_lambda_policy_s3_policy_attachment" {
   role       = aws_iam_role.short_url_lambda_iam.name
   policy_arn = aws_iam_policy.short_url_s3_policy.arn
+}
+
+# IAM user for publishing static site
+resource "aws_iam_user" "publish" {
+  name = var.iam_publish_user
+
+  # This part isn't strictly necessary, but it helps in the ordering
+  # that happens when running apply.
+  depends_on = [
+    aws_cloudfront_distribution.domain_cloudfront
+  ]
+}
+
+resource "aws_iam_access_key" "publish" {
+  user = aws_iam_user.publish.name
+}
+
+# Policy for this user
+data "template_file" "publish-policy" {
+  template = "${file("./templates/publish_user_policy.json")}"
+  vars = {
+    bucket = aws_s3_bucket.site_bucket.arn
+    distribution = aws_cloudfront_distribution.domain_cloudfront.arn
+  }
 }
