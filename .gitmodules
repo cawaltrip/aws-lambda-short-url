@@ -1,0 +1,6 @@
+[submodule "site/themes/spectral"]
+	path = site/themes/spectral
+	url = git@github.com:cawaltrip/spectral.git
+[submodule "site/themes/dimension"]
+	path = site/themes/dimension
+	url = git@github.com:cawaltrip/hugo-theme-dimension.git

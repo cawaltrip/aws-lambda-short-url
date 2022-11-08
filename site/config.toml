@@ -1,0 +1,26 @@
+baseURL = "https://skelli.es"
+title = "Skeletons on Parade"
+languageCode = "en-us"
+defaultContentLanguage = "en"
+paginate = "7"
+#theme = "spectral"
+theme = "dimension"
+description = "Yock Dehay!"
+
+
+[params]
+copyright = "Chris Waltrip"
+backgroundImage = "images/ludo_bg.jpg" # Relative to the static directory.
+fontAwesome = "https://kit.fontawesome.com/3e475e1496.js"
+
+[params.social]
+twitter = "cawaltrip"
+facebook = "chris.waltrip"
+instagram = "saxyhackerchris"
+# dribble = ""
+
+# language specific options
+
+[languages.en]
+weight = 0
+languageName = "English"
