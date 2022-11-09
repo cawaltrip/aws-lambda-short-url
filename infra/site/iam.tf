@@ -99,6 +99,12 @@ resource "aws_iam_access_key" "publish" {
   user = aws_iam_user.publish.name
 }
 
+resource "aws_iam_user_policy" "publish" {
+  name   = "${aws_iam_user.publish.name}-Policy"
+  user   = aws_iam_user.publish.name
+  policy = data.template_file.publish-policy.rendered
+}
+
 # Policy for this user
 data "template_file" "publish-policy" {
   template = "${file("./templates/publish_user_policy.json")}"
