@@ -2,7 +2,7 @@
 title: "The Gregiverse"
 titleIcon: "fa-light fa-face-glasses"
 date: 2022-11-08T14:44:13-08:00
-draft: true
+draft: false
 ---
 **Ideas from:** Skeletons on Parade\
 **Narrative & compiled by:** Chris Waltrip\
