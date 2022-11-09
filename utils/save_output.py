@@ -113,10 +113,11 @@ def main():
 
     new_conf = {
         'targets': [{
+            'name': "S3",
             'URL': output[HUGO_S3_BUCKET]['value'], 
             'cloudFrontDistributionID': output[CLOUDFRONT_DIST_ID]['value']}]}
     config['deployment'] = new_conf
-    
+
     try:
         with open(p, "w") as fp:
             fp.write(tomlkit.dumps(config))
