@@ -25,7 +25,7 @@ instagram = "saxyhackerchris"
 weight = 0
 languageName = "English"
 
-[deployment]
 [[deployment.targets]]
+name = "S3"
 URL = "s3://skelli.es?region=us-west-2"
 cloudFrontDistributionID = "E2I6I8KT3C9HJN"
